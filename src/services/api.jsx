@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:5001/iocl-backend-9262c/us-central1/api';
+const API_BASE_URL = 'http://iocl-backend-production-2894.up.railway.app/api/';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
