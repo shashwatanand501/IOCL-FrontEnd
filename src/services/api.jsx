@@ -1,6 +1,20 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://iocl-backend-production-2894.up.railway.app/api/';
+// Determine backend base URL (env var wins). Default kept for local/dev.
+const defaultBackend = 'http://iocl-backend-production-2894.up.railway.app/api';
+let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || defaultBackend;
+
+// If running in a browser over HTTPS, ensure backend URL uses HTTPS to avoid mixed-content errors.
+if (typeof window !== 'undefined' && window.location && window.location.protocol === 'https:') {
+  if (API_BASE_URL.startsWith('http://')) {
+    API_BASE_URL = API_BASE_URL.replace(/^http:\/\//i, 'https://');
+  } else if (!/^https?:\/\//i.test(API_BASE_URL)) {
+    API_BASE_URL = 'https://' + API_BASE_URL;
+  }
+}
+
+// Normalize: remove trailing slashes
+API_BASE_URL = API_BASE_URL.replace(/\/+$/, '');
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
